@@ -9,6 +9,5 @@ py-cpuinfo==9.0.0
 pycparser==3.0
 pyinstaller==6.19.0
 pyinstaller-hooks-contrib==2026.3
-pythonnet==3.0.5
 setuptools==82.0.1
 WMI==1.4.9

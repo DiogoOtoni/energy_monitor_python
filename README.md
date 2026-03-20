@@ -19,10 +19,17 @@ cd C:\Users\SeuNome\pasta\pasta\pasta_do_projeto
 # Crie um ambiente virtual
 python -m venv venv
 
-# Ative o ambiente virtual
-venv\Scripts\activate
+# Ative o ambiente virtual (no TERMINAL GITBASH)
+source venv/Scripts/activate
 
-# Instale as dependências
+# Atualize pip
+python.exe -m pip install --upgrade pip
+
+# Dependencia de instalação manual primeiro
+pip install pythonnet==3.1.0rc0
+pip install pywin32
+
+# Instalação das demais dependencias
 pip install -r requirements.txt
 
 # Execute o programa

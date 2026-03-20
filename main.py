@@ -10,6 +10,8 @@ import psutil
 import sys
 import tkinter as tk
 from tkinter import ttk, messagebox
+import pythoncom
+
 
 
 
@@ -224,8 +226,9 @@ class EnergyMonitor:
             GPU
             Outros componentes
         """
+        pythoncom.CoInitialize()
         try:
-            import wmi
+            
             c = wmi.WMI()
             total_power = 0.0
 
@@ -237,14 +240,16 @@ class EnergyMonitor:
                     total_power += cpu_power
 
             try:
+                CREATE_NO__WINDOW = 0x08000000
                 result = subprocess.run(
                     ['nvidia-smi', '--query-gpu=power.draw', '--format=csv,noheader,nounits'],
-                    capture_output=True, text=True, timeout=2
+                    capture_output=True, text=True, timeout=2, creationflags=CREATE_NO__WINDOW
                 )
                 if result.returncode == 0:
-                    gpu_power = float(result.stdout.strip())
+                    gpu_power = float(result.stdout.strip().replace(',', '.'))
                     total_power += gpu_power
-            except:
+            except Exception as e:
+                print(f"Erro ao consultar GPU: {e}")
                 pass
 
             total_power += 15.0
@@ -253,6 +258,9 @@ class EnergyMonitor:
         except Exception as e:
             print(f"Erro na medição WMI: {e}")
             return self.get_fallback_power_estimate()
+        finally:
+            pythoncom.CoUninitialize()
+        
     
     def get_macos_power_usage(self):
         """
